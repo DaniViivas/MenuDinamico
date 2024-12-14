@@ -106,8 +106,8 @@ function menuprincipal()
     </div>
     <!-- Navbar End -->
 
-      <!-- INICIO DEL IDENTIFICADOR DEL CONTENEDOR DINÁMICO -->
-<section id="Contendor-Dinamico">
+     
+<section id="Contendor-Dinamico">  <!-- INICIO DEL IDENTIFICADOR DEL CONTENEDOR DINÁMICO -->
 
 <!-- Carousel Start -->
 <div class="container-fluid mb-3">
@@ -387,7 +387,7 @@ function menuprincipal()
 
    
 
-
+    </section>   <!-- FIN DEL IDENTIFICADOR DEL CONTENEDOR DINÁMICO -->
  
     <!-- Vendor Start -->
     <div class="container-fluid py-5">
@@ -426,7 +426,7 @@ function menuprincipal()
 
     
 
-</section>
+
 
 HTML; // Este debe ir pegado hasta la izq, por caractesiticas de php usando HEREDOC
 }
