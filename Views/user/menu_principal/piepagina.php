@@ -76,7 +76,9 @@ function piepagina()
         <!-- Funciones del logeo y logout -->
         <script type="module" src="./js/auth/login.js"></script>
         <script src="./js/auth/logout.js"></script>
-        <script src="./js/carga_formularios.js" defer></script>
+        <script type= "module" src="./js/carga_formularios.js" ></script>
+
+        <!-- Utilidades para formularios -->
 
         
 

@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // MANEJA LOS EVENTOS DE CADA FORMULARIO
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -7,6 +8,18 @@ document.addEventListener('DOMContentLoaded', function () {
         //alert("Llegamos a carga_formularios")
         event.preventDefault();
         cargarFormulario('frm_nombre_funcion');
+    });
+
+    $(document).on('click', '#frm_login', function (event) {
+        //alert("Llegamos a carga_formularios")
+        event.preventDefault();
+        cargarFormulario('frm_login');
+    });
+
+    $(document).on('click', '#frm_registrarse', function (event) {
+        //alert("Llegamos a carga_formularios")
+        event.preventDefault();
+        cargarFormulario('frm_registrarse');
     });
 
 });
@@ -39,24 +52,70 @@ function cargarFormulario(caso) {
     });
 }
 
-// Función para cargar dinámicamente el script correspondiente
-function cargarScriptFormulario(caso) {
-    let scriptPath = `js/scripts/${caso}.js`; // Ruta del script del formulario
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// MANEJA LA CARGA DE FORMULARIOS DINÁMICAMENTE
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Crear un elemento <script> y agregarlo al DOM
-    let script = document.createElement('script');
-    script.src = scriptPath;
-    script.onload = function () {
-        console.log(`Script ${scriptPath} cargado correctamente`);
-        if (typeof inicializarFormulario === "function") {
-            inicializarFormulario();
+function cargarScriptFormulario(caso) {
+    // Definir dependencias si las hay
+    const dependencias = {
+        'frm_nombre_funcion': ['js/utilidades/nombre_funcion.js'],
+        'frm_registrarse': ['js/utilidades/validaciones.js'],
+        'frm_login': ['js/utilidades/log.js'],
+    };
+
+    // Si el formulario tiene dependencias, las cargamos
+    let scriptsToLoad = dependencias[caso] || [];
+
+    // Agregar siempre el script principal del formulario
+    scriptsToLoad.push(`js/scripts/${caso}.js`);
+
+    cargarScriptsEnOrden(scriptsToLoad, function () {
+        console.log(`Todos los scripts para ${caso} cargados correctamente.`);
+
+        // Verificar si la función está disponible globalmente antes de invocar
+        if (typeof window.inicializarFormulario === "function") {
+            window.inicializarFormulario(); // Asegúrate de que la función esté en el ámbito global
         } else {
-            console.warn(`La función inicializarFormulario no está definida en ${scriptPath}`);
+            console.warn(`La función inicializarFormulario no está definida en el script de ${caso}.`);
         }
+    });
+}
+
+
+// Función auxiliar para cargar scripts dinámicamente en orden
+function cargarScriptsEnOrden(scripts, callback) {
+    if (scripts.length === 0) {
+        if (callback) callback();
+        return;
+    }
+
+    let script = document.createElement('script');
+    script.src = scripts[0];
+    script.onload = function () {
+        console.log(`Script ${scripts[0]} cargado.`);
+        scripts.shift();
+        cargarScriptsEnOrden(scripts, callback);
     };
     script.onerror = function () {
-        console.error(`Error al cargar el script: ${scriptPath}`);
+        console.error(`Error al cargar el script: ${scripts[0]}`);
     };
 
     document.body.appendChild(script);
+}
+
+
+
+
+// Función auxiliar para inicializar el formulario si existe la función
+function ejecutarInicializacionFormulario() {
+    if (typeof inicializarFormulario === "function") {
+        try {
+            inicializarFormulario(); // Llamada a la inicialización del formulario
+        } catch (error) {
+            console.error("Error al inicializar el formulario:", error);
+        }
+    } else {
+        console.warn("La función 'inicializarFormulario' no está definida.");
+    }
 }

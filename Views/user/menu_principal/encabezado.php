@@ -42,6 +42,10 @@ function encabezado($title)
         <!-- Customized Bootstrap Stylesheet -->
         <link href="./css/style.css" rel="stylesheet">
 
+        <!-- OTROS RECURSOS -->
+        <link href="./css/form/login.css" rel="stylesheet">
+       
+
         <!-- CIERRE DE RECUROS ESTATICOS  -->
         </head>
                  <!-- CIERRE DEL HEAD  -->
